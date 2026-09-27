@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Planners</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f0d10;
+    --bg-alt:#18151a;
+    --card:#211c24;
+    --plum:#a8477f;
+    --plum-soft:#d98cb6;
+    --gold:#c9a24b;
+    --text:#f2f0eb;
+    --text-dim:#a8a3ab;
+    --border:#2e2731;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Playfair Display',serif;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .container{max-width:1100px;margin:0 auto;padding:0 20px;}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(15,13,16,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);}
+  nav{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;max-width:1100px;margin:0 auto;}
+  .logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--plum-soft);}
+  .logo span{color:var(--text);}
+  .nav-cta{background:var(--gold);color:#151515;padding:9px 18px;border-radius:4px;font-weight:600;font-size:0.85rem;}
+
+  .hero{
+    position:relative;min-height:88vh;display:flex;align-items:flex-end;
+    background:
+      linear-gradient(180deg, rgba(15,13,16,0.35) 0%, rgba(15,13,16,0.96) 100%),
+      url('https://images.unsplash.com/photo-1762765685348-4bced247d12c?w=1200&q=80') center/cover;
+  }
+  .hero-inner{padding:60px 20px 50px;max-width:1100px;margin:0 auto;width:100%;}
+  .hero-eyebrow{color:var(--plum-soft);letter-spacing:2px;text-transform:uppercase;font-size:0.75rem;font-weight:600;margin-bottom:14px;}
+  .hero h1{font-size:2.3rem;line-height:1.15;max-width:600px;margin-bottom:16px;}
+  .hero p{color:var(--text-dim);max-width:480px;margin-bottom:26px;font-size:1rem;}
+  .btn-row{display:flex;gap:12px;flex-wrap:wrap;}
+  .btn-primary{background:var(--gold);color:#151515;padding:13px 24px;border-radius:4px;font-weight:600;font-size:0.9rem;}
+  .btn-outline{border:1px solid var(--text-dim);color:var(--text);padding:13px 24px;border-radius:4px;font-weight:600;font-size:0.9rem;}
+
+  .trust-strip{background:var(--bg-alt);border-bottom:1px solid var(--border);padding:18px 0;}
+  .trust-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:0.82rem;color:var(--text-dim);}
+  .trust-row strong{color:var(--plum-soft);}
+
+  .section{padding:70px 0;}
+  .section-alt{background:var(--bg-alt);}
+  .sec-head{margin-bottom:36px;}
+  .sec-eyebrow{color:var(--plum-soft);text-transform:uppercase;letter-spacing:2px;font-size:0.72rem;font-weight:600;margin-bottom:8px;}
+  .sec-head h2{font-size:1.8rem;}
+  .sec-head p{color:var(--text-dim);margin-top:8px;max-width:520px;}
+
+  .pkg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;}
+  .pkg-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .pkg-img{height:170px;overflow:hidden;position:relative;}
+  .pkg-img img{width:100%;height:100%;object-fit:cover;}
+  .pkg-tag{position:absolute;top:10px;left:10px;background:var(--gold);color:#151515;font-size:0.7rem;font-weight:700;padding:4px 10px;border-radius:3px;text-transform:uppercase;}
+  .pkg-body{padding:18px;}
+  .pkg-price{color:var(--plum-soft);font-weight:600;font-size:1.05rem;margin-bottom:4px;}
+  .pkg-title{font-size:1rem;font-weight:600;margin-bottom:8px;}
+  .pkg-list{color:var(--text-dim);font-size:0.82rem;margin-bottom:14px;padding-left:16px;}
+  .pkg-list li{margin-bottom:3px;}
+  .pkg-btn{display:block;text-align:center;border:1px solid var(--gold);color:var(--gold);padding:9px;border-radius:4px;font-size:0.82rem;font-weight:600;}
+
+  .service-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+  .service-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;}
+  .service-card .num{color:var(--plum-soft);font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:10px;}
+  .service-card h3{font-size:1.05rem;margin-bottom:8px;}
+  .service-card p{color:var(--text-dim);font-size:0.88rem;}
+
+  .area-tags{display:flex;flex-wrap:wrap;gap:10px;}
+  .area-tag{background:var(--card);border:1px solid var(--border);padding:9px 16px;border-radius:20px;font-size:0.85rem;color:var(--text-dim);}
+
+  .about-wrap{display:grid;grid-template-columns:1fr;gap:30px;}
+  @media(min-width:700px){.about-wrap{grid-template-columns:1fr 1fr;align-items:center;}}
+  .about-img{border-radius:8px;overflow:hidden;height:280px;}
+  .about-img img{width:100%;height:100%;object-fit:cover;}
+  .stat-row{display:flex;gap:28px;margin-top:24px;flex-wrap:wrap;}
+  .stat-num{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--plum-soft);}
+  .stat-label{color:var(--text-dim);font-size:0.78rem;}
+
+  .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:140px;gap:10px;}
+  .gallery-grid img{width:100%;height:100%;object-fit:cover;border-radius:6px;}
+  .g-tall{grid-row:span 2;}
+  .g-wide{grid-column:span 2;}
+  @media(max-width:650px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:110px;}
+    .g-wide{grid-column:span 2;}
+  }
+
+  .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+  .testi-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:22px;}
+  .stars{color:var(--gold);margin-bottom:10px;font-size:0.9rem;}
+  .testi-card p{color:var(--text-dim);font-size:0.88rem;margin-bottom:14px;}
+  .testi-name{font-weight:600;font-size:0.88rem;}
+  .testi-role{color:var(--text-dim);font-size:0.78rem;}
+
+  .cta-band{background:linear-gradient(120deg,#211c24,#171318);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:60px 20px;}
+  .cta-band h2{font-size:1.6rem;margin-bottom:10px;}
+  .cta-band p{color:var(--text-dim);margin-bottom:24px;}
+
+  footer{padding:40px 20px 30px;text-align:center;color:var(--text-dim);font-size:0.82rem;}
+  footer .logo{display:block;margin-bottom:10px;}
+  .wa-float{position:fixed;bottom:20px;right:20px;background:#25D366;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,0.4);z-index:60;}
+  .wa-float svg{width:26px;height:26px;fill:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">EVENT<span>PLANNERS</span></div>
+    <a href="https://wa.me/2340000000000" class="nav-cta">Chat on WhatsApp</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Serving Multiple States, Nigeria</div>
+    <h1>Your event, planned end to end — no stress, no last-minute scramble.</h1>
+    <p>Weddings, birthdays, corporate events, baby showers and more. Décor, catering, and coordination handled so you can actually enjoy the day.</p>
+    <div class="btn-row">
+      <a href="#packages" class="btn-primary">View Packages</a>
+      <a href="https://wa.me/2340000000000" class="btn-outline">Book a Consultation</a>
+    </div>
+  </div>
+</section>
+
+<div class="trust-strip">
+  <div class="container trust-row">
+    <div><strong>80+</strong> events planned</div>
+    <div><strong>4.9★</strong> average client rating</div>
+    <div><strong>On-time</strong> setup, every time</div>
+    <div><strong>Full</strong> décor &amp; catering coordination</div>
+  </div>
+</div>
+
+<section class="section" id="packages">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-eyebrow">What We Offer</div>
+      <h2>Event Packages</h2>
+      <p>Starting points — every package is adjusted to your guest count and budget.</p>
+    </div>
+    <div class="pkg-grid">
+
+      <div class="pkg-card">
+        <div class="pkg-img">
+          <span class="pkg-tag">Wedding</span>
+          <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=500&q=80" alt="Wedding decor">
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-price">From ₦450,000</div>
+          <div class="pkg-title">Wedding &amp; Reception Package</div>
+          <ul class="pkg-list">
+            <li>Full décor &amp; floral styling</li>
+            <li>Table &amp; seating arrangement</li>
+            <li>On-site coordination</li>
+          </ul>
+          <a href="https://wa.me/2340000000000" class="pkg-btn">Enquire</a>
+        </div>
+      </div>
+
+      <div class="pkg-card">
+        <div class="pkg-img">
+          <span class="pkg-tag">Birthday</span>
+          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500&q=80" alt="Birthday party decor">
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-price">From ₦120,000</div>
+          <div class="pkg-title">Birthday &amp; Kids Party Package</div>
+          <ul class="pkg-list">
+            <li>Balloon &amp; theme décor</li>
+            <li>Cake table styling</li>
+            <li>Games &amp; entertainment add-ons</li>
+          </ul>
+          <a href="https://wa.me/2340000000000" class="pkg-btn">Enquire</a>
+        </div>
+      </div>
+
+      <div class="pkg-card">
+        <div class="pkg-img">
+          <span class="pkg-tag">Corporate</span>
+          <img src="https://images.unsplash.com/photo-1762765685348-4bced247d12c?w=500&q=80" alt="Corporate event setup">
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-price">From ₦300,000</div>
+          <div class="pkg-title">Corporate &amp; Conference Package</div>
+          <ul class="pkg-list">
+            <li>Venue styling &amp; branding</li>
+            <li>Seating &amp; AV coordination</li>
+            <li>Guest registration support</li>
+          </ul>
+          <a href="https://wa.me/2340000000000" class="pkg-btn">Enquire</a>
+        </div>
+      </div>
+
+      <div class="pkg-card">
+        <div class="pkg-img">
+          <span class="pkg-tag">Catering</span>
+          <img src="https://images.unsplash.com/photo-1742436448781-fe5eb077abd4?w=500&q=80" alt="Catering and buffet setup">
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-price">From ₦2,500 / plate</div>
+          <div class="pkg-title">Catering Add-On</div>
+          <ul class="pkg-list">
+            <li>Buffet or plated service</li>
+            <li>Custom menu options</li>
+            <li>Staffing included</li>
+          </ul>
+          <a href="https://wa.me/2340000000000" class="pkg-btn">Enquire</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-eyebrow">What We Do</div>
+      <h2>Services</h2>
+    </div>
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="num">01</div>
+        <h3>Weddings &amp; Engagements</h3>
+        <p>Full-service planning and décor from traditional ceremony to reception.</p>
+      </div>
+      <div class="service-card">
+        <div class="num">02</div>
+        <h3>Birthdays &amp; Baby Showers</h3>
+        <p>Themed décor, balloon styling, and coordination for kids' and adult celebrations.</p>
+      </div>
+      <div class="service-card">
+        <div class="num">03</div>
+        <h3>Corporate &amp; Conference Events</h3>
+        <p>Venue styling, seating layout, and on-the-day coordination for business events.</p>
+      </div>
+      <div class="service-card">
+        <div class="num">04</div>
+        <h3>Décor, Rentals &amp; Catering</h3>
+        <p>Chairs, tables, drapery, lighting, and catering — sourced and set up for you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-eyebrow">States We Cover</div>
+    <h2 style="margin-bottom:22px;">Areas Served</h2>
+    <div class="area-tags">
+      <span class="area-tag">Akwa Ibom</span>
+      <span class="area-tag">Rivers</span>
+      <span class="area-tag">Edo</span>
+      <span class="area-tag">Delta</span>
+      <span class="area-tag">Enugu</span>
+      <span class="area-tag">Benue</span>
+      <span class="area-tag">+ more states</span>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container about-wrap">
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80" alt="Event styling">
+    </div>
+    <div>
+      <div class="sec-eyebrow">Why Clients Choose Us</div>
+      <h2>Your event, handled from planning to teardown.</h2>
+      <p style="color:var(--text-dim);margin-top:12px;">We coordinate vendors, décor, catering, and setup so you're not juggling ten phone calls the week of your event. One point of contact, start to finish.</p>
+      <div class="stat-row">
+        <div><div class="stat-num">80+</div><div class="stat-label">Events Planned</div></div>
+        <div><div class="stat-num">6yrs</div><div class="stat-label">In the Industry</div></div>
+        <div><div class="stat-num">4.9★</div><div class="stat-label">Client Rating</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Recent Work</div>
+      <h2>Event Gallery</h2>
+      <p>A look at some of the events we've styled and coordinated.</p>
+    </div>
+    <div class="gallery-grid">
+      <img class="g-tall" src="https://images.unsplash.com/photo-1762765685348-4bced247d12c?w=500&q=80" alt="Event hall">
+      <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=500&q=80" alt="Table centerpiece">
+      <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500&q=80" alt="Balloon decor">
+      <img class="g-wide" src="https://images.unsplash.com/photo-1742436448781-fe5eb077abd4?w=800&q=80" alt="Buffet setup">
+      <img src="https://images.unsplash.com/photo-1762765685348-4bced247d12c?w=500&q=80" alt="Banquet tables">
+      <img class="g-tall" src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=500&q=80" alt="Floral styling">
+      <img class="g-wide" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80" alt="Party decor">
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Client Feedback</div>
+      <h2>What People Say</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Everything was set up before guests arrived. I didn't have to worry about a single thing on the day."</p>
+        <div class="testi-name">Client Name</div>
+        <div class="testi-role">Wedding Client</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"They handled décor, catering, and even the small details I forgot to mention. Very professional."</p>
+        <div class="testi-name">Client Name</div>
+        <div class="testi-role">Corporate Event</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"My daughter's birthday theme came out even better than the pictures I sent them."</p>
+        <div class="testi-name">Client Name</div>
+        <div class="testi-role">Birthday Client</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band">
+  <h2>Planning an event?</h2>
+  <p>Message us on WhatsApp — most replies within the hour.</p>
+  <a href="https://wa.me/2340000000000" class="btn-primary">Chat on WhatsApp</a>
+</div>
+
+<footer>
+  <div class="logo" style="justify-content:center;display:flex;color:var(--plum-soft);font-family:'Playfair Display',serif;">EVENT<span style="color:var(--text)">PLANNERS</span></div>
+  <p>Multiple States, Nigeria &nbsp;•&nbsp; Weddings · Birthdays · Corporate · Baby Showers</p>
+  <p style="margin-top:8px;">&copy; 2026 Event Planners. All rights reserved.</p>
+</footer>
+
+<a href="https://wa.me/2340000000000" class="wa-float" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.28-1.38a9.87 9.87 0 0 0 4.76 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.02c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.13.11-1.82-.12-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.79-4.17-4.94-4.36-.14-.2-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.27-.29.58-.36.78-.36.19 0 .39 0 .56.01.18.01.42-.07.65.5.24.58.82 2.01.89 2.16.07.15.12.32.02.51-.09.2-.14.32-.27.49-.14.17-.29.38-.41.51-.14.14-.28.3-.12.58.16.29.72 1.19 1.55 1.93 1.07.95 1.97 1.25 2.26 1.39.29.14.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.38-.24.64-.14.26.1 1.66.78 1.94.93.28.14.47.21.53.33.07.12.07.68-.17 1.36z"/></svg>
+</a>
+
+</body>
+</html>
